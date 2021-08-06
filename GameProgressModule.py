@@ -25,17 +25,24 @@ class GameProgress:
         """
 
         while True:
-            self.players_guess = str(input("Please enter a letter: ")).lower
+            self.players_guess = str(input("Please enter a letter: ")).lower()
 
-            for letters in self.players_guess:
-                total = total + 1
-        
+            if len(self.players_guess) > 1:
+                print("Please enter only one letter at a time")
+                continue
 
-            if total > 1:
-                print("")
+            if not (97 <= ord(self.players_guess) <= 122):
+                print("Please enter an alphabet only.")
+                continue
+            
+            if (
+                (self.players_guess in self.players_correct_guess) or  
+                (self.players_guess in self.players_incorrect_guess)
+               ):
+                
+                print("You have already guessed this character. ")
+                continue
 
-            else: break
-    
 
     def print_progress(self):
         """
@@ -70,14 +77,7 @@ class GameProgress:
         Evaluating if the player's guess is right or wrong
         After Evaluation, the player's guess will either be 
         """
-        def find(string):
-            special_char=re.compile('[@_!$%^&*()<>?/\|}{~:]#')
-    
-            if special_char.search(self.players_guess) == None:
-                return "Your Guess is Valid"
-            
-            else:
-                return "Your Guess is Invalid"
+        pass
         
 
 
