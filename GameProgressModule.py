@@ -3,7 +3,6 @@ Get's Player's input and sends input to other classes
 """
 
 import random
-import re
 
 
 class GameProgress:
@@ -72,12 +71,15 @@ class GameProgress:
                 self.word_progress = self.word_progress + character + " "
 
 
-    def evaluating(self):
+    def evaluating(self, selected_word):
         """
         Evaluating if the player's guess is right or wrong
         After Evaluation, the player's guess will either be 
         """
-        pass
-        
+        if self.players_guess in selected_word:
+            self.players_guess.append(self.players_correct_guess)
+
+        else:
+            self.players_incorrect_guess
 
 
