@@ -16,7 +16,6 @@ class GameProgress:
         self.players_incorrect_guess = []
         self.players_correct_guess = []
         self.word_progress = ""
-        self.max_score = 6
 
     def get_players_guess(self):
         """
@@ -79,11 +78,12 @@ class GameProgress:
         """
         if self.players_guess in selected_word:
             self.players_guess.append(self.players_correct_guess)
-
+            if len(self.players_correct_guess) == selected_word:
+                print("GG, you guessed all the letters sucessfully! You win!")
+                exit()
 
         else:  
             self.players_guess.append(self.players_incorrect_guess)
-            self.max_score = self.max_score - 1
-            if self.max_score == 0:
-                print("You have guessed incorrectly 6 times, you have lost the game. GG")
+            if len(self.players_incorrect_guess) == 6:
+                print("You have hit 6 wrong guesses - you hanged the man! GG")
                 exit()
