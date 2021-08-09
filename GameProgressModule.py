@@ -16,7 +16,7 @@ class GameProgress:
         self.players_incorrect_guess = []
         self.players_correct_guess = []
         self.word_progress = ""
-        
+        self.max_score = 6
 
     def get_players_guess(self):
         """
@@ -51,6 +51,7 @@ class GameProgress:
         # To print the number of blanks
         print("Word Progress: ", self.word_progress)
         print("Your Incorrect Guesses: ", self.players_incorrect_guess)
+        print("You have ", self.max_score, "incorrect guesses remaining")
 
 
     def updating_progress(self, selected_word):
@@ -74,12 +75,23 @@ class GameProgress:
     def evaluating(self, selected_word):
         """
         Evaluating if the player's guess is right or wrong
-        After Evaluation, the player's guess will either be 
+        After Evaluation, the player's guess will be appended to the appropriate list. 
         """
         if self.players_guess in selected_word:
-            self.players_guess.append(self.players_correct_guess)
+            if self.players_guess in self.players_correct_guess:
+                print("please guess a letter you have not guessed yet!")
+
+            else:
+                self.players_guess.append(self.players_correct_guess)
+
 
         else:
-            self.players_incorrect_guess
-
-
+            if self.players_guess in self.players_incorrect_guess:
+                print("Please guess a letter you have not guessed yet!")
+            
+            else:
+                self.players_guess.append(self.players_incorrect_guess)
+                self.max_score = self.max_score - 1
+                if self.max_score == 0:
+                    print("You have guessed incorrectly 6 times, you have lost the game. GG")
+                    exit()
