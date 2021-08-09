@@ -78,20 +78,12 @@ class GameProgress:
         After Evaluation, the player's guess will be appended to the appropriate list. 
         """
         if self.players_guess in selected_word:
-            if self.players_guess in self.players_correct_guess:
-                print("please guess a letter you have not guessed yet!")
-
-            else:
-                self.players_guess.append(self.players_correct_guess)
+            self.players_guess.append(self.players_correct_guess)
 
 
-        else:
-            if self.players_guess in self.players_incorrect_guess:
-                print("Please guess a letter you have not guessed yet!")
-            
-            else:
-                self.players_guess.append(self.players_incorrect_guess)
-                self.max_score = self.max_score - 1
-                if self.max_score == 0:
-                    print("You have guessed incorrectly 6 times, you have lost the game. GG")
-                    exit()
+        else:  
+            self.players_guess.append(self.players_incorrect_guess)
+            self.max_score = self.max_score - 1
+            if self.max_score == 0:
+                print("You have guessed incorrectly 6 times, you have lost the game. GG")
+                exit()
