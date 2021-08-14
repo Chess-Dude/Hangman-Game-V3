@@ -29,11 +29,15 @@ class GameProgress:
                 print("Please enter only one letter at a time")
                 continue
 
-            if not (97 <= ord(self.players_guess) <= 122):
+            elif len(self.players_guess) == 0:
+                print("Please enter at least one letter")
+                continue
+
+            elif not (97 <= ord(self.players_guess) <= 122):
                 print("Please enter an alphabet only.")
                 continue
             
-            if (
+            elif (
                 (self.players_guess in self.players_correct_guess) or  
                 (self.players_guess in self.players_incorrect_guess)
                ):
@@ -41,6 +45,8 @@ class GameProgress:
                 print("You have already guessed this character. ")
                 continue
 
+            else:
+                break
 
     def print_progress(self):
         """
@@ -50,7 +56,7 @@ class GameProgress:
         # To print the number of blanks
         print("Word Progress: ", self.word_progress)
         print("Your Incorrect Guesses: ", self.players_incorrect_guess)
-        print("You have ", self.max_score, "incorrect guesses remaining")
+        print("You have ", (6 - len(self.players_incorrect_guess)), "incorrect guesses remaining")
 
 
     def updating_progress(self, selected_word):
@@ -59,7 +65,7 @@ class GameProgress:
         """
         
         self.word_progress = ""
-        for character in selected_word:
+        for character in selected_word.lower():
             
             if character.isalpha() or character.isdigit():                
                 if character in self.players_correct_guess:
@@ -75,15 +81,28 @@ class GameProgress:
         """
         Evaluating if the player's guess is right or wrong
         After Evaluation, the player's guess will be appended to the appropriate list. 
+        If players guess is repeated, it'll be solved in another method (get_players_guess)
         """
-        if self.players_guess in selected_word:
-            self.players_guess.append(self.players_correct_guess)
-            if len(self.players_correct_guess) == selected_word:
+        if self.players_guess in selected_word.lower():
+            self.players_correct_guess.append(self.players_guess)
+            if len(self.players_correct_guess) == len(set(selected_word.lower())):
+                print("Word Progress: ", selected_word)
                 print("GG, you guessed all the letters sucessfully! You win!")
                 exit()
+            
+            else:
+                print("Correct guess!")
+
 
         else:  
-            self.players_guess.append(self.players_incorrect_guess)
+            self.players_incorrect_guess.append(self.players_guess)
             if len(self.players_incorrect_guess) == 6:
                 print("You have hit 6 wrong guesses - you hanged the man! GG")
+                exit()
+
+            elif 0 < len(self.players_incorrect_guess) < 6:
+                print("Incorrect guess. Guess again!")
+
+            else: 
+                print("the program ran into some error during the incorrect_guess evaluation")
                 exit()
