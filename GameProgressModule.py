@@ -23,30 +23,29 @@ class GameProgress:
         """
 
         while True:
-            self.players_guess = str(input("Please enter a letter: ")).lower()
 
-            if len(self.players_guess) > 1:
-                print("Please enter only one letter at a time")
-                continue
+            try:
+                self.players_guess = str(input("Please enter a letter of the English alphabet: ")).lower()
 
-            elif len(self.players_guess) == 0:
-                print("Please enter at least one letter")
-                continue
+                if ((not self.players_guess.isalpha()) or 
+                    (len(self.players_guess) > 1)
+                    ):
+                    
+                    raise TypeError
 
-            elif not (97 <= ord(self.players_guess) <= 122):
-                print("Please enter an alphabet only.")
-                continue
+            except TypeError:
+                print("Incorrect Input! You Entered: %s. Please enter one letter of the English alphabet." % (self.players_guess))
             
-            elif (
-                (self.players_guess in self.players_correct_guess) or  
-                (self.players_guess in self.players_incorrect_guess)
-               ):
-                
-                print("You have already guessed this character. ")
-                continue
-
             else:
-                break
+                 
+                if (
+                    (self.players_guess in self.players_correct_guess) or  
+                    (self.players_guess in self.players_incorrect_guess)
+                     ):
+                    print("You have already guessed this character. ")
+                    
+                else:
+                    break
 
     def print_progress(self):
         """
