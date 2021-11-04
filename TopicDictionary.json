@@ -1,0 +1,6 @@
+{
+    "Kitchenware": ["fork", "plate", "cup", "spoon", "pot", "bowl", "pan", "dish", "knife", "Sports", "Furniture", "Food"],
+    "Sports": ["ball", "net", "goal", "score", "racket", "active", "kick"],
+    "Furniture": ["couch", "chair", "television", "table", "desk", "bookshelf"],
+    "Food": ["banana", "potato", "toast", "rice", "delicious", "carrot", "cake", "tiramisu", "yummy"]
+}

@@ -3,6 +3,7 @@ The topic and then the word for the Hangman game will be auto selected here.
 """
 
 import random
+import json
 
 
 class WordSelection:
@@ -14,13 +15,11 @@ class WordSelection:
         """
         Constructor Function
         """
+        
+        with open("TopicDictionary.json", 'r') as config_reader:
 
-        self.topic_dictionary = {
-            "Kitchenware": ["fork", "plate", "cup", "spoon", "pot", "bowl", "pan", "dish", "knife", "Sports", "Furniture", "Food"],
-            "Sports": ["ball", "net", "goal", "score", "racket", "active", "kick"],
-            "Furniture": ["couch", "chair", "television", "table", "desk", "bookshelf"],
-            "Food": ["banana", "potato", "toast", "rice", "delicious", "carrot", "cake", "tiramisu", "yummy"]
-                            }
+            self.topic_dictionary = json.loads(config_reader.read())
+        
         self.topic_list = list(self.topic_dictionary.keys())
         self.selected_topic = random.choice(self.topic_list)                   
         self.selected_word = random.choice(self.topic_dictionary[self.selected_topic])
