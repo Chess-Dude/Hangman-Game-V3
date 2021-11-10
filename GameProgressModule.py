@@ -3,7 +3,9 @@ Get's Player's input and sends input to other classes
 """
 
 import random
-
+import sys # helps with systems level commands (exiting programs, gettings command line info)
+import pygame 
+from pygame.locals import * 
 
 class GameProgress:
     """
@@ -17,35 +19,24 @@ class GameProgress:
         self.players_correct_guess = []
         self.word_progress = ""
 
-    def get_players_guess(self):
-        """
-        Get's any input needed
-        """
 
+    def get_players_guess(self, players_guess):
+        """
+        Get's user input
+        """
         while True:
 
-            try:
-                self.players_guess = str(input("Please enter a letter of the English alphabet: ")).lower()
+            self.players_guess = players_guess
 
-                if ((not self.players_guess.isalpha()) or 
-                    (len(self.players_guess) > 1)
-                    ):
-                    
-                    raise TypeError
+            if (
+                (self.players_guess in self.players_correct_guess) or  
+                (self.players_guess in self.players_incorrect_guess)
+                ):
+                print("You have already guessed this character. ")
+                continue
 
-            except TypeError:
-                print("Incorrect Input! You Entered: %s. Please enter one letter of the English alphabet." % (self.players_guess))
-            
             else:
-                 
-                if (
-                    (self.players_guess in self.players_correct_guess) or  
-                    (self.players_guess in self.players_incorrect_guess)
-                     ):
-                    print("You have already guessed this character. ")
-                    
-                else:
-                    break
+                break
 
     def print_progress(self):
         """
@@ -53,6 +44,9 @@ class GameProgress:
         """
         # Using a for loop to loop/itterate through the chosen word to see how many letters 
         # To print the number of blanks
+
+        # text = pygame_drawing_shapes.LETTER_FONT.render(("Word Progress: ", self.word_progress), 1, pygame_drawing_shapes.BLACK)
+       #  pygame_drawing_shapes.DISPLAYSURF.blit(text, (pygame_drawing_shapes.WITDTH/2 - text.get_width()/2, 20))
         print("Word Progress: ", self.word_progress)
         print("Your Incorrect Guesses: ", self.players_incorrect_guess)
         print("You have ", (6 - len(self.players_incorrect_guess)), "incorrect guesses remaining")
