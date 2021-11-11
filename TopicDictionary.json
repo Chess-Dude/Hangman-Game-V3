@@ -1,6 +1,6 @@
 {
-    "Kitchenware": ["fork", "plate", "cup", "spoon", "pot", "bowl", "pan", "dish", "knife", "Sports", "Furniture", "Food"],
-    "Sports": ["ball", "net", "goal", "score", "racket", "active", "kick"],
+    "Computer Parts": ["keyboard", "monitor", "motherboard", "cpu", "psu", "mouse", "cooler", "ram", "battery"],
+    "Coding": ["list", "string", "integer", "float", "set", "dictionary", "variable", "python", "javascript", "css", "html"],
     "Furniture": ["couch", "chair", "television", "table", "desk", "bookshelf"],
     "Food": ["banana", "potato", "toast", "rice", "delicious", "carrot", "cake", "tiramisu", "yummy"]
 }

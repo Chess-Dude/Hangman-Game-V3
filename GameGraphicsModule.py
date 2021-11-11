@@ -9,10 +9,12 @@ class GameGraphics:
     """
     """
 
+
+
     def __init__(self):
         """
         """
-        pygame.init()
+        
         # setting up fps
         self.FPS = 30
         self.frame_per_sec = pygame.time.Clock()
@@ -103,50 +105,51 @@ class GameGraphics:
         clicked_on = []
 
     
-    def run_pygame(self):
-        """
-        """
-        while True:
-            # Run game
+def run_pygame(self):
+    """
+    """
+    pygame.init()
+    while True:
+        # Run game
 
-            # Update game display so the user can see
-            pygame.display.update()
+        # Update game display so the user can see
+        pygame.display.update()
 
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    print("exit event occured")
-                    pygame.quit()
-                    sys.exit()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                print("exit event occured")
+                pygame.quit()
+                sys.exit()
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    m_x, m_y = pygame.mouse.get_pos()
-                    print(m_x, m_y)
-                    x1 = 35
-                    x2 = self.SCREEN_WITDTH - 35
-                    PADDING = (x2 - x1) / 13 
-                    y = 385
-                    y1 = 350 - self.RADIUS_OF_CIRCLE - PADDING
-                    y2 = 420 - self.RADIUS_OF_CIRCLE + PADDING
-                    ASCII_LETTER_VALUE = 65
-                    
-                    COLUMN_NUMBER = (m_x - x1) / PADDING 
-                    COLUMN_NUMBER = int(COLUMN_NUMBER + ASCII_LETTER_VALUE)
-
-                    if ((x1 <= m_x < x2) and (y1 <= m_y <= y2)):
-                        print("in grid")
-
-                        if m_y > y:
-                            print("mouse pos > 385, bottom row")
-                            COLUMN_NUMBER = int(COLUMN_NUMBER + 13)
-
-                        elif m_x < y:
-                            print("mouse pos < 385, top row")
-                            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                m_x, m_y = pygame.mouse.get_pos()
+                print(m_x, m_y)
+                x1 = 35
+                x2 = self.SCREEN_WITDTH - 35
+                PADDING = (x2 - x1) / 13 
+                y = 385
+                y1 = 350 - self.RADIUS_OF_CIRCLE - PADDING
+                y2 = 420 - self.RADIUS_OF_CIRCLE + PADDING
+                ASCII_LETTER_VALUE = 65
                 
-                        self.player_guess = str(chr(COLUMN_NUMBER))
-                        print(self.players_guess)
+                COLUMN_NUMBER = (m_x - x1) / PADDING 
+                COLUMN_NUMBER = int(COLUMN_NUMBER + ASCII_LETTER_VALUE)
 
-                        return self.players_guess
+                if ((x1 <= m_x < x2) and (y1 <= m_y <= y2)):
+                    print("in grid")
+
+                    if m_y > y:
+                        print("mouse pos > 385, bottom row")
+                        COLUMN_NUMBER = int(COLUMN_NUMBER + 13)
+
+                    elif m_x < y:
+                        print("mouse pos < 385, top row")
+                        
+            
+                    self.player_guess = str(chr(COLUMN_NUMBER))
+                    print(self.players_guess)
+
+                    return self.players_guess
 
 
-                    self.frame_per_sec.tick(self.FPS)
+                self.frame_per_sec.tick(self.FPS)

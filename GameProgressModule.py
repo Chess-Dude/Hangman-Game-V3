@@ -38,6 +38,7 @@ class GameProgress:
             else:
                 break
 
+
     def print_progress(self):
         """
         Checking for number of blanks to print
@@ -70,14 +71,15 @@ class GameProgress:
                 self.word_progress = self.word_progress + character + " "
 
 
-    def evaluating(self, selected_word):
+    def evaluating(self, selected_word, players_guess):
         """
         Evaluating if the player's guess is right or wrong
         After Evaluation, the player's guess will be appended to the appropriate list. 
         If players guess is repeated, it'll be solved in another method (get_players_guess)
         """
-        if self.players_guess in selected_word.lower():
-            self.players_correct_guess.append(self.players_guess)
+
+        if players_guess in selected_word.lower():
+            self.players_correct_guess.append(players_guess)
             if len(self.players_correct_guess) == len(set(selected_word.lower())):
                 print("Word Progress: ", selected_word)
                 print("GG, you guessed all the letters sucessfully! You win!")
@@ -88,9 +90,10 @@ class GameProgress:
 
 
         else:  
-            self.players_incorrect_guess.append(self.players_guess)
+            self.players_incorrect_guess.append(players_guess)
             if len(self.players_incorrect_guess) == 6:
                 print("You have hit 6 wrong guesses - you hanged the man! GG")
+                print(selected_word, self.players_correct_guess, self.players_incorrect_guess)
                 exit()
 
             elif 0 < len(self.players_incorrect_guess) < 6:
