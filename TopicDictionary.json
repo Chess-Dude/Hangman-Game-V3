@@ -1,6 +1,9 @@
 {
     "Computer Parts": ["keyboard", "monitor", "motherboard", "cpu", "psu", "mouse", "cooler", "ram", "battery"],
-    "Coding": ["list", "string", "integer", "float", "set", "dictionary", "variable", "python", "javascript", "css", "html"],
-    "Furniture": ["couch", "chair", "television", "table", "desk", "bookshelf"],
-    "Food": ["banana", "potato", "toast", "rice", "delicious", "carrot", "cake", "tiramisu", "yummy"]
+    "data structures": ["list", "string", "integer", "float", "set", "dictionary", "variable"],
+    "Operating Systems": ["windows", "mac", "linux"],
+    "File Safety": ["bluetooth", "wireles", "data", "viruses"],
+    "File Types": ["jpeg", "png", "zip", "gif", "tif", "psd", "cdr", "csv", "doc", "docx", "mp4", "mp3", "mov", "wav"],
+    "Storage Memory": ["hdd", "cd", "dvd", "flash", "memory", "ram"],
+    "Coding Languages": ["python", "html", "javascript", "css", "html"]
 }

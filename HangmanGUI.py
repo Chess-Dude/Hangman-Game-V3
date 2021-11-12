@@ -17,11 +17,12 @@ HEIGHT = 472
 FPS = 30
 
 # Declaring font types
-TITLE_FONT = pygame.font.SysFont('comicsans', 70)
+TITLE_FONT = pygame.font.SysFont('comicsans', 80)
+SUB_TITLE_FONT = pygame.font.SysFont('comicsans', 60)
 WORD_FONT = pygame.font.SysFont('comicsans', 55)
 LETTER_FONT_SIZE = 40
 LETTER_FONT = pygame.font.SysFont('comicsans', LETTER_FONT_SIZE)
-
+SYSTEM_FONT_MESSAGE = pygame.font.SysFont('comicsans', 30)
 
 # setting up color objects
 WHITE = (0, 0, 0)
@@ -51,18 +52,17 @@ COLUMN_WIDTH = (RADIUS * 2) + GAP # this should be 70
 
 def load_hangman_images(DISPLAYSURF, players_incorrect_guess):
     """
-    Import hangman images
+    Importing and blitting hangman images
     """
-    # players_incorrect_guess is a list of incorrect guesses from the GameProgressModule class/file, which was imported and
-    # passed as a parameter to this function 
+
     hangman_image_list = []
     hangman_status = len(players_incorrect_guess)
     for i in range(7):
         hangman_image = pygame.image.load("hangman" + str(i) + ".png")
-        hangman_image_list.append(hangman_image)
-        DISPLAYSURF.blit(hangman_image_list[hangman_status], (150, 100))
-
-    
+        hangman_image_list.append(hangman_image) 
+        print(hangman_status) # do not forget to remove
+        DISPLAYSURF.blit(hangman_image_list[hangman_status], (130, 100))
+        
 
 def draw_letters(DISPLAYSURF, letters_to_print):
     """
@@ -135,19 +135,28 @@ def get_letter(m_x, m_y, letters_to_print):
         return None
 
 
-def refresh_screen(DISPLAYSURF, letters_to_print, word_progress, players_incorrect_guess):
+def refresh_screen(DISPLAYSURF, letters_to_print, word_progress, players_incorrect_guess, selected_topic, system_message):
     """
+    refreshes screen
     """
     
     # Loading Background Images
     # DISPLAYSURF.blit(BACKGROUND, (0, 0))
     DISPLAYSURF.fill((100, 100, 100))  
 
-    # Printing Title
-    text = TITLE_FONT.render("HANGMAN", 1, BLACK)
-    DISPLAYSURF.blit(text, (WIDTH/2 - text.get_width()/2, 20))
-    text = WORD_FONT.render(word_progress, 1, BLACK)
-    DISPLAYSURF.blit(text, (WIDTH / 2, HEIGHT / 2))
+    # Printing Text
+    title_text = TITLE_FONT.render("HANGMAN", 1, BLACK)
+    DISPLAYSURF.blit(title_text, (WIDTH/2 - title_text.get_width()/2, 20))
+    
+    word_text = WORD_FONT.render(word_progress, 1, BLACK)
+    DISPLAYSURF.blit(word_text, word_text.get_rect(center = DISPLAYSURF.get_rect().center))
+    
+    sub_title_text = SUB_TITLE_FONT.render(("Topic: " + selected_topic), 1, BLACK) 
+    DISPLAYSURF.blit(sub_title_text, (WIDTH/2 - sub_title_text.get_width()/2, 75))
+
+    system_message_text = SYSTEM_FONT_MESSAGE.render(system_message, 1, BLACK)
+    DISPLAYSURF.blit(system_message_text, (WIDTH/2 - sub_title_text.get_width()/2, 100))
+
     
     load_hangman_images(DISPLAYSURF, players_incorrect_guess)
     draw_letters(DISPLAYSURF, letters_to_print)
@@ -161,16 +170,14 @@ def main():
 
     word_selection_obj = WordSelectionModule.WordSelection()
     game_progress_obj = GameProgressModule.GameProgress()
-    game_progress_obj.updating_progress(word_selection_obj.selected_word) 
-
+    game_progress_obj.updating_progress(word_selection_obj.selected_word)
+    
     # Assign FPS a value
-
     frame_per_sec = pygame.time.Clock()
 
     
     # Setup a 979x472 pixel display with caption
     # set the screen size according to the background image proportions.
-
     DISPLAYSURF = pygame.display.set_mode(size=(WIDTH, HEIGHT))
     pygame.display.set_caption("Hangman")
     
@@ -180,9 +187,8 @@ def main():
         letters_to_print[chr(65 + letter)] = True
 
 
-    refresh_screen(DISPLAYSURF, letters_to_print, game_progress_obj.word_progress, game_progress_obj.players_incorrect_guess)
+    refresh_screen(DISPLAYSURF, letters_to_print, game_progress_obj.word_progress, game_progress_obj.players_incorrect_guess, word_selection_obj.selected_topic, game_progress_obj.system_message)
     pygame.display.update()
-    
     
     while True:
         # Run game
@@ -207,13 +213,8 @@ def main():
                 game_progress_obj.evaluating(word_selection_obj.selected_word, player_guess.lower())
                 game_progress_obj.updating_progress(word_selection_obj.selected_word) 
         
-        refresh_screen(DISPLAYSURF, letters_to_print, game_progress_obj.word_progress, game_progress_obj.players_incorrect_guess)
+        refresh_screen(DISPLAYSURF, letters_to_print, game_progress_obj.word_progress, game_progress_obj.players_incorrect_guess, word_selection_obj.selected_topic, game_progress_obj.system_message)
         frame_per_sec.tick(FPS)
 
 if __name__ == "__main__":
     main()
-
-# if len (incorrect guesses) == 1
-# print hangman1 file
-
-# create function that prints out the "hanged man", takes arguments of # of incorrect guesses made

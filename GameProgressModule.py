@@ -12,12 +12,12 @@ class GameProgress:
     Takes input from player. Processes the input, formats the output text.
     """
 
-    
     def __init__(self):
         self.players_guess = ""
         self.players_incorrect_guess = []
         self.players_correct_guess = []
         self.word_progress = ""
+        self.system_message = ""
 
 
     def get_players_guess(self, players_guess):
@@ -82,7 +82,7 @@ class GameProgress:
             self.players_correct_guess.append(players_guess)
             if len(self.players_correct_guess) == len(set(selected_word.lower())):
                 print("Word Progress: ", selected_word)
-                print("GG, you guessed all the letters sucessfully! You win!")
+                self.system_message = ("GG, you guessed all the letters sucessfully! You win!")
                 exit()
             
             else:
@@ -92,13 +92,14 @@ class GameProgress:
         else:  
             self.players_incorrect_guess.append(players_guess)
             if len(self.players_incorrect_guess) == 6:
-                print("You have hit 6 wrong guesses - you hanged the man! GG")
-                print(selected_word, self.players_correct_guess, self.players_incorrect_guess)
+                print(self.players_incorrect_guess)
+                self.system_message = ("You have hit 6 wrong guesses - you hanged the man! GG")
+                print(selected_word, self.players_correct_guess, self.players_incorrect_guess) 
                 exit()
 
             elif 0 < len(self.players_incorrect_guess) < 6:
-                print("Incorrect guess. Guess again!")
+                self.system_message = ("Incorrect guess. Guess again!")
 
             else: 
-                print("the program ran into some error during the incorrect_guess evaluation")
+                self.system_message = ("the program ran into some error during the incorrect_guess evaluation")
                 exit()
