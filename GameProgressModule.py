@@ -2,9 +2,7 @@
 Get's Player's input and sends input to other classes
 """
 
-import random
-import sys # helps with systems level commands (exiting programs, gettings command line info)
-import pygame 
+# imports
 from pygame.locals import * 
 
 class GameProgress:
@@ -13,44 +11,14 @@ class GameProgress:
     """
 
     def __init__(self):
+        """
+        Constructor function that defines needed data structures
+        """
         self.players_guess = ""
         self.players_incorrect_guess = []
         self.players_correct_guess = []
         self.word_progress = ""
         self.system_message = ""
-
-
-    def get_players_guess(self, players_guess):
-        """
-        Get's user input
-        """
-        while True:
-
-            self.players_guess = players_guess
-
-            if (
-                (self.players_guess in self.players_correct_guess) or  
-                (self.players_guess in self.players_incorrect_guess)
-                ):
-                print("You have already guessed this character. ")
-                continue
-
-            else:
-                break
-
-
-    def print_progress(self):
-        """
-        Checking for number of blanks to print
-        """
-        # Using a for loop to loop/itterate through the chosen word to see how many letters 
-        # To print the number of blanks
-
-        # text = pygame_drawing_shapes.LETTER_FONT.render(("Word Progress: ", self.word_progress), 1, pygame_drawing_shapes.BLACK)
-       #  pygame_drawing_shapes.DISPLAYSURF.blit(text, (pygame_drawing_shapes.WITDTH/2 - text.get_width()/2, 20))
-        print("Word Progress: ", self.word_progress)
-        print("Your Incorrect Guesses: ", self.players_incorrect_guess)
-        print("You have ", (6 - len(self.players_incorrect_guess)), "incorrect guesses remaining")
 
 
     def updating_progress(self, selected_word):
@@ -81,20 +49,17 @@ class GameProgress:
         if players_guess in selected_word.lower():
             self.players_correct_guess.append(players_guess)
             if len(self.players_correct_guess) == len(set(selected_word.lower())):
-                print("Word Progress: ", selected_word)
                 self.system_message = ("GG, you guessed all the letters sucessfully! You win!")
                 exit()
             
             else:
-                print("Correct guess!")
+                self.system_message = ("Correct guess!")
 
 
         else:  
             self.players_incorrect_guess.append(players_guess)
             if len(self.players_incorrect_guess) == 6:
-                print(self.players_incorrect_guess)
-                self.system_message = ("You have hit 6 wrong guesses - you hanged the man! GG")
-                print(selected_word, self.players_correct_guess, self.players_incorrect_guess) 
+                self.system_message = ("You have hit 6 wrong guesses - you hanged the man! GG") 
                 exit()
 
             elif 0 < len(self.players_incorrect_guess) < 6:

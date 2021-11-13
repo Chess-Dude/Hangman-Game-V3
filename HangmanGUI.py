@@ -1,11 +1,19 @@
-import os # help with getting/formatting file path locations
-import sys # helps with systems level commands (exiting programs, gettings command line info)
-import time 
+"""
+Name: Rayyan Lodhi
+Date: October 28th 
+Program Name: HangmanGUI.py, GameProgressModule, WordSelectionModule.py, TopicDictionary.json
+Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman 
+Change log: Rayyan Lodhi - November 11th added comments
+"""
+
+# imports
+import sys 
 import pygame 
 from pygame.locals import * 
 import WordSelectionModule
 import GameProgressModule
 
+# initializes pygame
 pygame.init()
 
 # display size
@@ -30,7 +38,7 @@ BLACK = (0, 0, 0)
 GREEN = (255, 0, 0)
 RED = (0, 255, 77)
 
-# Drawing/making circles/letters
+# Drawing/making circles/letters variables
 RADIUS = 30
 GAP = 10
 TOTAL_WIDTH = RADIUS * 2 + GAP
@@ -39,7 +47,7 @@ FIRST_CIRCLE_X = round((WIDTH - (RADIUS * 2 + GAP) * 13) / 2) + RADIUS + (GAP / 
 FIRST_CIRCLE_Y_ROW_1 = 350
 FIRST_CIRCLE_Y_ROW_2 = 420
 
-# creating grid for letters
+# creating grid for letters variables
 X1 = 35
 X2 = WIDTH - 35
 PADDING = GAP / 2
@@ -54,7 +62,7 @@ def load_hangman_images(DISPLAYSURF, players_incorrect_guess):
     """
     Importing and blitting hangman images
     """
-
+    
     hangman_image_list = []
     hangman_status = len(players_incorrect_guess)
     for i in range(7):
@@ -74,42 +82,46 @@ def draw_letters(DISPLAYSURF, letters_to_print):
     refer to the official documentation of the code below:    
     """
 
+    # defining coords to draw buttons
     x_circle_coord = FIRST_CIRCLE_X
     y_circle_coord_row_1 = FIRST_CIRCLE_Y_ROW_1
     y_circle_coord_row_2 = FIRST_CIRCLE_Y_ROW_2
 
+    # looping 13 times (13 buttons per row)
     for i in range(13):
 
+        # checking if dictionary value of letter is True (from A-M)
         if letters_to_print[chr(65 + i)]:
-            
-            # Drawing letter for top row
+            # Drawing buttons for top row buttons
             pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_1), RADIUS, LINE_THICKNESS)
             letters = LETTER_FONT.render(chr(65 + i), 1, WHITE)
             DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_1 - (LETTER_FONT_SIZE / 4)))  
 
+        # checking if dictionary value of letter is True (from N-Z)
         if letters_to_print[chr(78 + i)]: 
-            # Drawing letter for bottom row
+            # Drawing letter for bottom row buttons
             pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_2), RADIUS, LINE_THICKNESS)
             letters = LETTER_FONT.render(chr(78 + i), 1, WHITE)
             DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_2 - (LETTER_FONT_SIZE / 4)))         
-            
+        
         x_circle_coord = x_circle_coord + TOTAL_WIDTH
 
 
 def get_letter(m_x, m_y, letters_to_print):
     """
-    Returns letter that is clicked on
+    Determines what button is pressed
     """
+
     player_guess = None
-    
     column_number = (((m_x - X1) / COLUMN_WIDTH) + 1) 
     column_number = int(column_number)
-    
     top_row = False
 
+    # determining if mouse button is in grid (if a button is pressed) via mouse pressed coordinates
     if ((X1 <= m_x < X2) and (Y1 <= m_y <= Y2)):
-        print("in grid")
 
+        # determining what row the mouse was clicked
+        # if mouse y coordinate was greater than the 
         if m_y > Y_MID:
             print("mouse pos > 385, bottom row")
             top_row = False 
@@ -168,6 +180,7 @@ def main():
     Do not run outside this module, as it initializes the pygame here.
     """
 
+    print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \n Change log: Rayyan Lodhi - November 11th added comments")
     word_selection_obj = WordSelectionModule.WordSelection()
     game_progress_obj = GameProgressModule.GameProgress()
     game_progress_obj.updating_progress(word_selection_obj.selected_word)
