@@ -33,7 +33,7 @@ LETTER_FONT = pygame.font.SysFont('comicsans', LETTER_FONT_SIZE)
 SYSTEM_FONT_MESSAGE = pygame.font.SysFont('comicsans', 30)
 
 # setting up color objects
-WHITE = (0, 0, 0)
+WHITE = (0, 180, 0)
 BLACK = (0, 0, 0)
 GREEN = (255, 0, 0)
 RED = (0, 255, 77)
@@ -91,6 +91,7 @@ def draw_letters(DISPLAYSURF, letters_to_print):
     for i in range(13):
 
         # checking if dictionary value of letter is True (from A-M)
+        # if false - does not print (already guessed values)
         if letters_to_print[chr(65 + i)]:
             # Drawing buttons for top row buttons
             pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_1), RADIUS, LINE_THICKNESS)
@@ -98,6 +99,7 @@ def draw_letters(DISPLAYSURF, letters_to_print):
             DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_1 - (LETTER_FONT_SIZE / 4)))  
 
         # checking if dictionary value of letter is True (from N-Z)
+        # if false - does not print (already guessed values)
         if letters_to_print[chr(78 + i)]: 
             # Drawing letter for bottom row buttons
             pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_2), RADIUS, LINE_THICKNESS)
@@ -130,10 +132,11 @@ def get_letter(m_x, m_y, letters_to_print):
             print("mouse pos < 385, top row")
             top_row = True
 
-
+        # if mouse was clicked in top row
         if top_row:
             player_guess = str(chr(column_number + ASCII_A - 1)) # subtract 1 due to column number starting from 1, not 0 
 
+        # else (if mouse was clicked in bottom row)
         else:
             player_guess = str(chr(column_number + ASCII_A + 13 - 1))
 
@@ -154,7 +157,7 @@ def refresh_screen(DISPLAYSURF, letters_to_print, word_progress, players_incorre
     
     # Loading Background Images
     # DISPLAYSURF.blit(BACKGROUND, (0, 0))
-    DISPLAYSURF.fill((100, 100, 100))  
+    DISPLAYSURF.fill((0, 130, 0))  
 
     # Printing Text
     title_text = TITLE_FONT.render("HANGMAN", 1, BLACK)
@@ -163,13 +166,13 @@ def refresh_screen(DISPLAYSURF, letters_to_print, word_progress, players_incorre
     word_text = WORD_FONT.render(word_progress, 1, BLACK)
     DISPLAYSURF.blit(word_text, word_text.get_rect(center = DISPLAYSURF.get_rect().center))
     
-    sub_title_text = SUB_TITLE_FONT.render(("Topic: " + selected_topic), 1, BLACK) 
-    DISPLAYSURF.blit(sub_title_text, (WIDTH/2 - sub_title_text.get_width()/2, 75))
+    topic_text = SUB_TITLE_FONT.render(("Topic: " + selected_topic), 1, BLACK) 
+    DISPLAYSURF.blit(topic_text, (WIDTH/2 - topic_text.get_width()/2, 75))
 
     system_message_text = SYSTEM_FONT_MESSAGE.render(system_message, 1, BLACK)
-    DISPLAYSURF.blit(system_message_text, (WIDTH/2 - sub_title_text.get_width()/2, 100))
+    DISPLAYSURF.blit(system_message_text, (WIDTH/2 - topic_text.get_width()/2, 100))
 
-    
+    # callling functions to load hangman images and draw letters/buttons
     load_hangman_images(DISPLAYSURF, players_incorrect_guess)
     draw_letters(DISPLAYSURF, letters_to_print)
 
@@ -177,12 +180,16 @@ def refresh_screen(DISPLAYSURF, letters_to_print, word_progress, players_incorre
 def main():
     """
     Main game loop
-    Do not run outside this module, as it initializes the pygame here.
     """
 
+    # printing purpose
     print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \n Change log: Rayyan Lodhi - November 11th added comments")
+    
+    # creating objects
     word_selection_obj = WordSelectionModule.WordSelection()
     game_progress_obj = GameProgressModule.GameProgress()
+    
+    # calling updating_progress method
     game_progress_obj.updating_progress(word_selection_obj.selected_word)
     
     # Assign FPS a value
@@ -194,34 +201,41 @@ def main():
     DISPLAYSURF = pygame.display.set_mode(size=(WIDTH, HEIGHT))
     pygame.display.set_caption("Hangman")
     
-
+    # append all letters of alphabet to letters_to_print dictionary (used in drawing_letters)
     letters_to_print = {}
     for letter in range(0, 26):
         letters_to_print[chr(65 + letter)] = True
 
-
+    # refreshing screen
     refresh_screen(DISPLAYSURF, letters_to_print, game_progress_obj.word_progress, game_progress_obj.players_incorrect_guess, word_selection_obj.selected_topic, game_progress_obj.system_message)
     pygame.display.update()
     
+    # running game
     while True:
-        # Run game
+
         player_guess = None
 
         # Update game display so the user can see
         pygame.display.update()
 
+        # checking if exit event occured
         for event in pygame.event.get():
             if event.type == QUIT:
                 print("exit event occured")
                 pygame.quit()
                 sys.exit()
 
+            # checking if mouse was clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
+                # getting where mouse was clicked (coords)
                 m_x, m_y = pygame.mouse.get_pos()
-                print(m_x, m_y)
+                
+                # getting player guess
                 player_guess = get_letter(m_x, m_y, letters_to_print)
+                # settings the letter value that was guessed to "false" (to not print)
                 letters_to_print[player_guess] = False
-            
+
+            # calling methods from GameProgress class to evaluate and update the progress/score            
             if player_guess is not None:
                 game_progress_obj.evaluating(word_selection_obj.selected_word, player_guess.lower())
                 game_progress_obj.updating_progress(word_selection_obj.selected_word) 
