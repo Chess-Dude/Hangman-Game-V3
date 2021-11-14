@@ -39,32 +39,38 @@ class GameProgress:
                 self.word_progress = self.word_progress + character + " "
 
 
-    def evaluating(self, selected_word, players_guess):
+    def evaluating(self, selected_word, players_guess, GAME_STATE):
         """
         Evaluating if the player's guess is right or wrong
         After Evaluation, the player's guess will be appended to the appropriate list. 
         If players guess is repeated, it'll be solved in another method (get_players_guess)
         """
 
+        game_status = GAME_STATE["GAME_IN_PROGRESS"]
+
         if players_guess in selected_word.lower():
             self.players_correct_guess.append(players_guess)
             if len(self.players_correct_guess) == len(set(selected_word.lower())):
                 self.system_message = ("GG, you guessed all the letters sucessfully! You win!")
-                exit()
+                game_status = GAME_STATE["GAME_WON"]
             
             else:
                 self.system_message = ("Correct guess!")
-
+                game_status = GAME_STATE["GAME_IN_PROGRESS"]
 
         else:  
             self.players_incorrect_guess.append(players_guess)
             if len(self.players_incorrect_guess) == 6:
                 self.system_message = ("You have hit 6 wrong guesses - you hanged the man! GG") 
-                exit()
+                game_status = GAME_STATE["GAME_LOST"]
 
             elif 0 < len(self.players_incorrect_guess) < 6:
                 self.system_message = ("Incorrect guess. Guess again!")
+                game_status = GAME_STATE["GAME_IN_PROGRESS"]
+
 
             else: 
                 self.system_message = ("the program ran into some error during the incorrect_guess evaluation")
                 exit()
+        
+        return game_status
