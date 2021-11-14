@@ -12,6 +12,7 @@ import pygame
 from pygame.locals import * 
 import WordSelectionModule
 import GameProgressModule
+from BlittingHangManImages import blit_hangman_images
 
 # initializes pygame
 pygame.init()
@@ -19,7 +20,6 @@ pygame.init()
 # display size
 WIDTH = 979
 HEIGHT = 472
-# BACKGROUND = pygame.image.load('hangmanbackgroundtest.jpg')
 
 # FPS
 FPS = 30
@@ -72,16 +72,6 @@ HELP_X = WIDTH - 150
 HELP_Y = 40
 HELP_WIDTH = 100
 HELP_HEIGHT = 20
-
-
-def blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list):
-    """
-    Importing and blitting hangman images
-    """
-    
-    hangman_status = len(players_incorrect_guess)
-    
-    DISPLAYSURF.blit(hangman_image_list[hangman_status], (130, 100))
         
 
 def draw_letters(DISPLAYSURF, letters_to_print):
@@ -228,6 +218,10 @@ def blitting_help_menu(DISPLAYSURF):
 
         y += word_height  # Start on new row.    
 
+def changing_game_status():
+    """
+
+    """
 
 def refresh_screen(DISPLAYSURF, 
                    letters_to_print, 
