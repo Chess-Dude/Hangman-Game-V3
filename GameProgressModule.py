@@ -2,9 +2,6 @@
 Get's Player's input and sends input to other classes
 """
 
-# imports
-from pygame.locals import * 
-
 class GameProgress:
     """
     Takes input from player. Processes the input, formats the output text.
@@ -51,7 +48,7 @@ class GameProgress:
         if players_guess in selected_word.lower():
             self.players_correct_guess.append(players_guess)
             if len(self.players_correct_guess) == len(set(selected_word.lower())):
-                self.system_message = ("GG, you guessed all the letters sucessfully! You win!")
+                self.system_message = ("GG, you guessed all the letters!")
                 game_status = GAME_STATE["GAME_WON"]
             
             else:
@@ -61,13 +58,12 @@ class GameProgress:
         else:  
             self.players_incorrect_guess.append(players_guess)
             if len(self.players_incorrect_guess) == 6:
-                self.system_message = ("You have hit 6 wrong guesses - you hanged the man! GG") 
+                self.system_message = ("You hanged the man! GG") 
                 game_status = GAME_STATE["GAME_LOST"]
 
             elif 0 < len(self.players_incorrect_guess) < 6:
                 self.system_message = ("Incorrect guess. Guess again!")
                 game_status = GAME_STATE["GAME_IN_PROGRESS"]
-
 
             else: 
                 self.system_message = ("the program ran into some error during the incorrect_guess evaluation")

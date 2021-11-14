@@ -34,7 +34,7 @@ SYSTEM_FONT_MESSAGE = pygame.font.SysFont('comicsans', 30)
 HELP_FONT_MESSAGE = pygame.font.SysFont('comicsans', 20)
 
 # setting up color objects
-WHITE = (0, 0, 0)
+WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (255, 0, 0)
 RED = (0, 255, 77)
@@ -106,16 +106,16 @@ def draw_letters(DISPLAYSURF, letters_to_print):
         # if false - does not print (already guessed values)
         if letters_to_print[chr(65 + i)]:
             # Drawing buttons for top row buttons
-            pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_1), RADIUS, LINE_THICKNESS)
-            letters = LETTER_FONT.render(chr(65 + i), 1, WHITE)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (x_circle_coord, y_circle_coord_row_1), RADIUS, LINE_THICKNESS)
+            letters = LETTER_FONT.render(chr(65 + i), 1, BLACK)
             DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_1 - (LETTER_FONT_SIZE / 4)))  
 
         # checking if dictionary value of letter is True (from N-Z)
         # if false - does not print (already guessed values)
         if letters_to_print[chr(78 + i)]: 
             # Drawing letter for bottom row buttons
-            pygame.draw.circle(DISPLAYSURF, WHITE, (x_circle_coord, y_circle_coord_row_2), RADIUS, LINE_THICKNESS)
-            letters = LETTER_FONT.render(chr(78 + i), 1, WHITE)
+            pygame.draw.circle(DISPLAYSURF, BLACK, (x_circle_coord, y_circle_coord_row_2), RADIUS, LINE_THICKNESS)
+            letters = LETTER_FONT.render(chr(78 + i), 1, BLACK)
             DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_2 - (LETTER_FONT_SIZE / 4)))         
         
         x_circle_coord = x_circle_coord + TOTAL_WIDTH
@@ -171,7 +171,7 @@ def blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message):
     DISPLAYSURF.blit(topic_text, (WIDTH/2 - topic_text.get_width()/2, 75))
 
     system_message_text = SYSTEM_FONT_MESSAGE.render(system_message, 1, BLACK)
-    DISPLAYSURF.blit(system_message_text, (369, 150))
+    DISPLAYSURF.blit(system_message_text, (WIDTH/2 - system_message_text.get_width()/2, 150))
 
     help_text_button = HELP_FONT_MESSAGE.render("Click Here For Help", 1, BLACK)
     DISPLAYSURF.blit(help_text_button, (WIDTH - 150, 40))
@@ -191,7 +191,7 @@ def blitting_help_menu(DISPLAYSURF):
     blitting help_menu
     """
 
-    DISPLAYSURF.fill((255, 255, 255))  
+    DISPLAYSURF.fill(WHITE)  
     game_help_menu =    "Rules:\nThis game will be a remake of the classic game Hangman!\n\n"
     game_help_menu =    game_help_menu + "Objective:\n" 
     game_help_menu =    game_help_menu + "The computer/system randomizes a topic and a word from that topic. The users/players must try to guess the word by guessing letters (clicking the on-screen letters)."
@@ -242,12 +242,13 @@ def refresh_screen(DISPLAYSURF,
     
     # Loading Background Images
     # DISPLAYSURF.blit(BACKGROUND, (0, 0))
-    DISPLAYSURF.fill((255, 255, 255))  
+    DISPLAYSURF.fill(WHITE)  
 
     # Printing Text
     title_text = TITLE_FONT.render("HANGMAN", 1, BLACK)
     DISPLAYSURF.blit(title_text, (WIDTH/2 - title_text.get_width()/2, 20))
 
+    # depending on current game status, the display will be updated based on game state
     if game_status == GAME_STATE["START_MENU"]:
         blitting_start_menu(DISPLAYSURF)
     
@@ -268,7 +269,6 @@ def refresh_screen(DISPLAYSURF,
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
         draw_letters(DISPLAYSURF, letters_to_print)
-        
 
     elif game_status == GAME_STATE["GAME_HELP"]:
         blitting_help_menu(DISPLAYSURF)
@@ -313,7 +313,7 @@ def main():
     for letter in range(0, 26):
         letters_to_print[chr(65 + letter)] = True
 
-    # refreshing screen
+    # refreshing screen to show inital display
     refresh_screen(DISPLAYSURF, 
                    letters_to_print, 
                    game_progress_obj.word_progress, 
@@ -356,9 +356,21 @@ def main():
                 pygame.quit()
                 sys.exit()
             
+            # if game status is set to the help menu we dont want to supervise the game in progress and 
+            # we want to wait until we exit the GAME_HELP screen to return to supervising the GAME_IN_PROGRESS screen
             if game_status == GAME_STATE["GAME_HELP"]:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     game_status = GAME_STATE["GAME_IN_PROGRESS"]
+
+            elif game_status == GAME_STATE["GAME_WON"]:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.quit()
+                    sys.exit()
+
+            elif game_status == GAME_STATE["GAME_LOST"]:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.quit()
+                    sys.exit()
 
             else:
 
@@ -398,3 +410,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# refactor
+# comment code
