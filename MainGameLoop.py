@@ -3,7 +3,7 @@ Name: Rayyan Lodhi
 Date: October 28th 
 Program Name: HangmanGUI.py, GameProgressModule, WordSelectionModule.py, TopicDictionary.json
 Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman 
-Change log: Rayyan Lodhi - November 11th added comments
+Change log: Rayyan Lodhi - November 14th Refactored code
 """
 
 # imports
@@ -14,6 +14,7 @@ import WordSelectionModule
 import GameProgressModule
 from BlittingHangManImages import blit_hangman_images
 from DrawingLetters import draw_letters
+from GetLetter import get_letter
 
 # initializes pygame
 pygame.init()
@@ -59,6 +60,7 @@ GRID_Y2 = 420 + RADIUS + PADDING
 ASCII_A = 65
 COLUMN_WIDTH = (RADIUS * 2) + GAP # this should be 70 
 
+# game status variables
 GAME_STATE = {
                 "START_MENU": 0,  
                 "GAME_IN_PROGRESS": 1,
@@ -74,44 +76,6 @@ HELP_Y = 40
 HELP_WIDTH = 100
 HELP_HEIGHT = 20
         
-
-def get_letter(m_x, m_y, letters_to_print):
-    """
-    Determines what button is pressed
-    """
-
-    player_guess = None
-    column_number = (((m_x - GRID_LEFT_X1) / COLUMN_WIDTH) + 1) 
-    column_number = int(column_number)
-    top_row = False
-
-    # determining if mouse button is in grid (if a button is pressed) via mouse pressed coordinates
-    if ((GRID_LEFT_X1 <= m_x < GRID_RIGHT_X2) and (GRID_Y1 <= m_y <= GRID_Y2)):
-
-        # determining what row the mouse was clicked
-        # if mouse y coordinate was greater than the 
-        if m_y > GRID_MID_Y:
-            top_row = False 
-
-        elif m_y < GRID_MID_Y:
-            top_row = True
-
-        # if mouse was clicked in top row
-        if top_row:
-            player_guess = str(chr(column_number + ASCII_A - 1)) # subtract 1 due to column number starting from 1, not 0 
-
-        # else (if mouse was clicked in bottom row)
-        else:
-            player_guess = str(chr(column_number + ASCII_A + 13 - 1))
-
-
-    if (player_guess is not None) and (letters_to_print[player_guess]):
-        return player_guess
-        
-
-    else:
-        return None
-
 
 def blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message):
     """
@@ -182,10 +146,6 @@ def blitting_help_menu(DISPLAYSURF):
 
         y += word_height  # Start on new row.    
 
-def changing_game_status():
-    """
-
-    """
 
 def refresh_screen(DISPLAYSURF, 
                    letters_to_print, 
@@ -273,7 +233,7 @@ def main():
     global game_status
 
     # printing purpose
-    print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \n Change log: Rayyan Lodhi - November 11th added comments")
+    print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \nChange log: Rayyan Lodhi - November 14th Refactored code\nFull Change log can be viewed here: https://github.com/Chess-Dude/Hangman-Game-V3")
     
     # creating objects
     word_selection_obj = WordSelectionModule.WordSelection()
@@ -377,7 +337,16 @@ def main():
                     # overlap between the guesses and help button
                     else: 
                         # getting player guess
-                        player_guess = get_letter(m_x, m_y, letters_to_print)
+                        player_guess = get_letter(m_x, 
+                                                  m_y, 
+                                                  letters_to_print, 
+                                                  GRID_LEFT_X1, 
+                                                  COLUMN_WIDTH, 
+                                                  GRID_RIGHT_X2, 
+                                                  GRID_Y1, 
+                                                  GRID_Y2, 
+                                                  GRID_MID_Y, 
+                                                  ASCII_A)
                         # settings the letter value that was guessed to "false" (to not print)
                         letters_to_print[player_guess] = False
 
