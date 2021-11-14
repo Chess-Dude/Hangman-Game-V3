@@ -13,6 +13,7 @@ from pygame.locals import *
 import WordSelectionModule
 import GameProgressModule
 from BlittingHangManImages import blit_hangman_images
+from DrawingLetters import draw_letters
 
 # initializes pygame
 pygame.init()
@@ -73,43 +74,6 @@ HELP_Y = 40
 HELP_WIDTH = 100
 HELP_HEIGHT = 20
         
-
-def draw_letters(DISPLAYSURF, letters_to_print):
-    """
-    to find the corrects values I used  the following formula:
-    (width of screen - (radius of circcle + gap between circles)(# of alphabets/2)/2)
-    This gave me the leftover pixels for each side, 34.5 which rounds up to 35.
-    This info allowed me to start drawing from the left side of the first circle.
-    Note that to draw the circle, we must give the draw.circle method the coordinate range, thius adding half the gap + half the diameter of the circle. 
-    refer to the official documentation of the code below:    
-    """
-
-    # defining coords to draw buttons
-    x_circle_coord = FIRST_CIRCLE_X
-    y_circle_coord_row_1 = FIRST_CIRCLE_Y_ROW_1
-    y_circle_coord_row_2 = FIRST_CIRCLE_Y_ROW_2
-
-    # looping 13 times (13 buttons per row)
-    for i in range(13):
-
-        # checking if dictionary value of letter is True (from A-M)
-        # if false - does not print (already guessed values)
-        if letters_to_print[chr(65 + i)]:
-            # Drawing buttons for top row buttons
-            pygame.draw.circle(DISPLAYSURF, BLACK, (x_circle_coord, y_circle_coord_row_1), RADIUS, LINE_THICKNESS)
-            letters = LETTER_FONT.render(chr(65 + i), 1, BLACK)
-            DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_1 - (LETTER_FONT_SIZE / 4)))  
-
-        # checking if dictionary value of letter is True (from N-Z)
-        # if false - does not print (already guessed values)
-        if letters_to_print[chr(78 + i)]: 
-            # Drawing letter for bottom row buttons
-            pygame.draw.circle(DISPLAYSURF, BLACK, (x_circle_coord, y_circle_coord_row_2), RADIUS, LINE_THICKNESS)
-            letters = LETTER_FONT.render(chr(78 + i), 1, BLACK)
-            DISPLAYSURF.blit(letters, (x_circle_coord - (LETTER_FONT_SIZE / 4), y_circle_coord_row_2 - (LETTER_FONT_SIZE / 4)))         
-        
-        x_circle_coord = x_circle_coord + TOTAL_WIDTH
-
 
 def get_letter(m_x, m_y, letters_to_print):
     """
@@ -250,19 +214,49 @@ def refresh_screen(DISPLAYSURF,
         blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
-        draw_letters(DISPLAYSURF, letters_to_print)
+        draw_letters(DISPLAYSURF, 
+                     letters_to_print, 
+                     FIRST_CIRCLE_X, 
+                     FIRST_CIRCLE_Y_ROW_1, 
+                     FIRST_CIRCLE_Y_ROW_2, 
+                     BLACK, 
+                     LETTER_FONT, 
+                     LETTER_FONT_SIZE, 
+                     RADIUS, 
+                     LINE_THICKNESS, 
+                     TOTAL_WIDTH)
 
     elif game_status == GAME_STATE["GAME_WON"]:
         blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
-        draw_letters(DISPLAYSURF, letters_to_print)
+        draw_letters(DISPLAYSURF, 
+                     letters_to_print, 
+                     FIRST_CIRCLE_X, 
+                     FIRST_CIRCLE_Y_ROW_1, 
+                     FIRST_CIRCLE_Y_ROW_2, 
+                     BLACK, 
+                     LETTER_FONT, 
+                     LETTER_FONT_SIZE, 
+                     RADIUS, 
+                     LINE_THICKNESS, 
+                     TOTAL_WIDTH)
 
     elif game_status == GAME_STATE["GAME_LOST"]:
         blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
-        draw_letters(DISPLAYSURF, letters_to_print)
+        draw_letters(DISPLAYSURF, 
+                     letters_to_print, 
+                     FIRST_CIRCLE_X, 
+                     FIRST_CIRCLE_Y_ROW_1, 
+                     FIRST_CIRCLE_Y_ROW_2, 
+                     BLACK, 
+                     LETTER_FONT, 
+                     LETTER_FONT_SIZE, 
+                     RADIUS, 
+                     LINE_THICKNESS, 
+                     TOTAL_WIDTH)
 
     elif game_status == GAME_STATE["GAME_HELP"]:
         blitting_help_menu(DISPLAYSURF)
