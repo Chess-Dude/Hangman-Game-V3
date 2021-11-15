@@ -16,6 +16,7 @@ from BlittingHangManImages import blit_hangman_images
 from DrawingLetters import draw_letters
 from GetLetter import get_letter
 from BlittingText import blitting_text
+from BlittingStartMenu import blitting_start_menu
 
 # initializes pygame
 pygame.init()
@@ -76,14 +77,6 @@ HELP_X = WIDTH - 150
 HELP_Y = 40
 HELP_WIDTH = 100
 HELP_HEIGHT = 20
-        
-
-def blitting_start_menu(DISPLAYSURF):
-    """
-    blits start menu
-    """
-    clicking_anywhere = WORD_FONT.render("click anywhere to play", 1, BLACK)
-    DISPLAYSURF.blit(clicking_anywhere, (WIDTH/2 - clicking_anywhere.get_width()/2, HEIGHT / 2))
 
 
 def blitting_help_menu(DISPLAYSURF):
@@ -150,7 +143,7 @@ def refresh_screen(DISPLAYSURF,
 
     # depending on current game status, the display will be updated based on game state
     if game_status == GAME_STATE["START_MENU"]:
-        blitting_start_menu(DISPLAYSURF)
+        blitting_start_menu(DISPLAYSURF, WORD_FONT, BLACK, WIDTH, HEIGHT)
     
     elif game_status == GAME_STATE["GAME_IN_PROGRESS"]:
         blitting_text(DISPLAYSURF, 
@@ -162,7 +155,7 @@ def refresh_screen(DISPLAYSURF,
                       WIDTH, 
                       SYSTEM_FONT_MESSAGE, 
                       HELP_FONT_MESSAGE)
-                      
+
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
         draw_letters(DISPLAYSURF, 
