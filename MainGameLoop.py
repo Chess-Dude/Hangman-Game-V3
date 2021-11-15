@@ -15,6 +15,7 @@ import GameProgressModule
 from BlittingHangManImages import blit_hangman_images
 from DrawingLetters import draw_letters
 from GetLetter import get_letter
+from BlittingText import blitting_text
 
 # initializes pygame
 pygame.init()
@@ -76,25 +77,6 @@ HELP_Y = 40
 HELP_WIDTH = 100
 HELP_HEIGHT = 20
         
-
-def blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message):
-    """
-    blits/renders text
-    """
-
-    word_text = WORD_FONT.render(word_progress, 1, BLACK)
-    DISPLAYSURF.blit(word_text, word_text.get_rect(center = DISPLAYSURF.get_rect().center))
-    
-    topic_text = SUB_TITLE_FONT.render(("Topic: " + selected_topic), 1, BLACK) 
-    DISPLAYSURF.blit(topic_text, (WIDTH/2 - topic_text.get_width()/2, 75))
-
-    system_message_text = SYSTEM_FONT_MESSAGE.render(system_message, 1, BLACK)
-    DISPLAYSURF.blit(system_message_text, (WIDTH/2 - system_message_text.get_width()/2, 150))
-
-    help_text_button = HELP_FONT_MESSAGE.render("Click Here For Help", 1, BLACK)
-    DISPLAYSURF.blit(help_text_button, (WIDTH - 150, 40))
-    help_text_width, helpt_text_height = help_text_button.get_size()
-
 
 def blitting_start_menu(DISPLAYSURF):
     """
@@ -171,7 +153,16 @@ def refresh_screen(DISPLAYSURF,
         blitting_start_menu(DISPLAYSURF)
     
     elif game_status == GAME_STATE["GAME_IN_PROGRESS"]:
-        blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
+        blitting_text(DISPLAYSURF, 
+                      word_progress, 
+                      selected_topic, 
+                      system_message, 
+                      WORD_FONT, BLACK, 
+                      SUB_TITLE_FONT, 
+                      WIDTH, 
+                      SYSTEM_FONT_MESSAGE, 
+                      HELP_FONT_MESSAGE)
+                      
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
         draw_letters(DISPLAYSURF, 
@@ -187,7 +178,16 @@ def refresh_screen(DISPLAYSURF,
                      TOTAL_WIDTH)
 
     elif game_status == GAME_STATE["GAME_WON"]:
-        blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
+        blitting_text(DISPLAYSURF, 
+                      word_progress, 
+                      selected_topic, 
+                      system_message, 
+                      WORD_FONT, BLACK, 
+                      SUB_TITLE_FONT, 
+                      WIDTH, 
+                      SYSTEM_FONT_MESSAGE, 
+                      HELP_FONT_MESSAGE)
+
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
         draw_letters(DISPLAYSURF, 
@@ -203,7 +203,16 @@ def refresh_screen(DISPLAYSURF,
                      TOTAL_WIDTH)
 
     elif game_status == GAME_STATE["GAME_LOST"]:
-        blitting_text(DISPLAYSURF, word_progress, selected_topic, system_message)
+        blitting_text(DISPLAYSURF, 
+                      word_progress, 
+                      selected_topic, 
+                      system_message, 
+                      WORD_FONT, BLACK, 
+                      SUB_TITLE_FONT, 
+                      WIDTH, 
+                      SYSTEM_FONT_MESSAGE, 
+                      HELP_FONT_MESSAGE)
+
         # callling functions to blit hangman images and draw letters/buttons
         blit_hangman_images(DISPLAYSURF, players_incorrect_guess, hangman_image_list)
         draw_letters(DISPLAYSURF, 
@@ -367,7 +376,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# refactor
-# comment code
