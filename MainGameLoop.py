@@ -3,7 +3,7 @@ Name: Rayyan Lodhi
 Date: October 28th 
 Program Name: HangmanGUI.py, GameProgressModule, WordSelectionModule.py, TopicDictionary.json
 Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman 
-Change log: Rayyan Lodhi - November 14th Refactored code
+Change log: Rayyan Lodhi - November 14th Refactored code and added comments
 """
 
 # imports
@@ -12,12 +12,7 @@ import pygame
 from pygame.locals import * 
 import WordSelectionModule
 import GameProgressModule
-from BlittingHangManImages import blit_hangman_images
-from DrawingLetters import draw_letters
 from GetLetter import get_letter
-from BlittingText import blitting_text
-from BlittingStartMenu import blitting_start_menu
-from BlittingHelpMenu import blitting_help_menu
 from RefreshScreen import refresh_screen
 
 # initializes pygame
@@ -89,7 +84,7 @@ def main():
     global game_status
 
     # printing purpose
-    print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \nChange log: Rayyan Lodhi - November 14th Refactored code\nFull Change log can be viewed here: https://github.com/Chess-Dude/Hangman-Game-V3")
+    print("Purpose: Big Gaming Assignment - runs a graphical user interface of Hangman \nChange log: Rayyan Lodhi - November 14th Refactored code and added comments.\nFull Change log can be viewed here: https://github.com/Chess-Dude/Hangman-Game-V3")
     
     # creating objects
     word_selection_obj = WordSelectionModule.WordSelection()
@@ -105,12 +100,11 @@ def main():
     DISPLAYSURF = pygame.display.set_mode(size=(WIDTH, HEIGHT))
     pygame.display.set_caption("Hangman")
     
-    # load all 7 images here so it only needs to be once
+    # load all 7 images here
     hangman_image_list = []
     for i in range(7):
         hangman_image = pygame.image.load("hangman" + str(i) + ".png")
         hangman_image_list.append(hangman_image)
-
 
     # append all letters of alphabet to letters_to_print dictionary (used in drawing_letters)
     letters_to_print = {}
@@ -147,10 +141,12 @@ def main():
     
     pygame.display.update()
     
-    # this is the START_MENU
+    # this is the START_MENU loop
     game_status = GAME_STATE["START_MENU"]
     start_flag = False
     while not start_flag:
+
+        # checking if exit event occured
         for event in pygame.event.get():
             if event.type == QUIT:
                 print("exit event occured")
@@ -158,6 +154,8 @@ def main():
                 sys.exit()
 
             # checking if mouse was clicked
+            # if true, set start_flag to True (so while True breaks), then GAME_STATE moves on to GAME_IN_PROGRESS
+            # we have this clicking feature as a "START_MENU"
             if event.type == pygame.MOUSEBUTTONDOWN:
                 
                 start_flag = True
@@ -181,22 +179,24 @@ def main():
             
             # if game status is set to the help menu we dont want to supervise the game in progress and 
             # we want to wait until we exit the GAME_HELP screen to return to supervising the GAME_IN_PROGRESS screen
+            # we do this by waiting for a mouse click anywhere
             if game_status == GAME_STATE["GAME_HELP"]:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     game_status = GAME_STATE["GAME_IN_PROGRESS"]
 
+            # elif game status is set to the GAME_WON we wait till mouse is clicked (so we can exit)
             elif game_status == GAME_STATE["GAME_WON"]:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pygame.quit()
                     sys.exit()
-
+            # elif game status is set to the GAME_LOST we wait till mouse is clicked (so we can exit)
             elif game_status == GAME_STATE["GAME_LOST"]:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pygame.quit()
                     sys.exit()
 
+            # if neither statement is true, run else (meaning grid must have been clicked)
             else:
-
                 # checking if mouse was clicked
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # getting where mouse was clicked (coords)
@@ -222,14 +222,15 @@ def main():
                                                   GRID_Y2, 
                                                   GRID_MID_Y, 
                                                   ASCII_A)
-                        # settings the letter value that was guessed to "false" (to not print)
+                        # setting the letter value that was guessed to "false" (to not print in draw_letters function)
                         letters_to_print[player_guess] = False
 
                 # calling methods from GameProgress class to evaluate and update the progress/score            
                 if player_guess is not None:
                     game_status = game_progress_obj.evaluating(word_selection_obj.selected_word, player_guess.lower(), GAME_STATE)
                     game_progress_obj.updating_progress(word_selection_obj.selected_word) 
-        
+
+            # refreshes screen with any pending changes
             refresh_screen(DISPLAYSURF, 
                    letters_to_print, 
                    game_progress_obj.word_progress, 
@@ -256,7 +257,7 @@ def main():
                    RADIUS, 
                    LINE_THICKNESS, 
                    TOTAL_WIDTH)
-        
+
         frame_per_sec.tick(FPS)
 
 if __name__ == "__main__":

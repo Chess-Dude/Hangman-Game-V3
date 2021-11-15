@@ -7,17 +7,23 @@ def blitting_help_menu(DISPLAYSURF, WHITE, WORD_FONT, BLACK):
     blitting help_menu
     """
 
-    DISPLAYSURF.fill(WHITE)  
+    # fills background with white (to hide any game progress)
+    DISPLAYSURF.fill(WHITE)
+
+    # sets game_help_menu variable (a long string of the rules and objective)  
     game_help_menu =    "Rules:\nThis game will be a remake of the classic game Hangman!\n\n"
     game_help_menu =    game_help_menu + "Objective:\n" 
     game_help_menu =    game_help_menu + "The computer/system randomizes a topic and a word from that topic. The users/players must try to guess the word by guessing letters (clicking the on-screen letters)."
     game_help_menu =    game_help_menu + "Each incorrect guess brings the user/player closer to being hanged (6 lives)." 
     game_help_menu =    game_help_menu + "\n\nClick Anywhere to go back." 
 
-    words = [word.split(' ') for word in game_help_menu.splitlines()]  # 2D array where each row is a list of words.
+    # 2D array where each row is a list of words.
+    words = [word.split(' ') for word in game_help_menu.splitlines()]  
 
-    space = WORD_FONT.size(' ')[0]  # The width of a space.
+    # The width of a space.
+    space = WORD_FONT.size(' ')[0]  
 
+    # gettubg max display size and position
     max_width, max_height = DISPLAYSURF.get_size()
     pos = (0, 0)
     x, y = pos

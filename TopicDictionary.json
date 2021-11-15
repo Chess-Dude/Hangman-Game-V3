@@ -1,5 +1,6 @@
 {
-    "Computer Parts": ["keyboard", "monitor", "motherboard", "cpu", "psu", "mouse", "cooler", "ram", "battery"],
+    "Computer Parts": ["keyboard", "monitor", "motherboard", "cpu", "psu", "mouse", "cooler", "ram", "battery", "ssd", "hdd", "webcam", "cables"],
+    "Computer Ports": ["VGA", "HDMI", "Audio Port", "Display Port", "USB", "eSATA", "DVI"],
     "data structures": ["list", "string", "integer", "float", "set", "dictionary", "variable"],
     "Operating Systems": ["windows", "mac", "linux"],
     "File Safety": ["bluetooth", "wireles", "data", "viruses"],

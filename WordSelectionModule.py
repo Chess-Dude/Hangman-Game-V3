@@ -2,7 +2,7 @@
 The topic and then the word for the Hangman game will be auto selected here.
 """
 
-# importing modules used
+# imports
 import random
 import json
 
@@ -27,11 +27,11 @@ class WordSelection:
         self.selected_topic = random.choice(self.topic_list)                   
         self.selected_word = random.choice(self.topic_dictionary[self.selected_topic])
 
-
     def __str__(self):
         """
         Made for Debugging purposes
         """    
+        # prints status selected_topic and selected_word for debugging purposes
         status_1 = "selected_topic is " + self.selected_topic + "\n"
         status_2 = "selected_word is " + self.selected_word + "\n"    
         return status_1 + status_2
